@@ -2,22 +2,20 @@
 
 <div class="login">
 <div class="container">
-    <div class="row">
-        <div class="col-md-7 bg-primary" style="height: 100%; margin-top:100px">
-        </div>
-        <div class="col-md-5 my-5 justify-content-center">
-            <div class="card border-0 shadow-0 my-5">
+    <div class="row d-flex justify-content-center my-5" style="padding:0">
+        <div class="col-md-5  my-5">
+            <div class="card">
                 <h5 class="text-center mt-5">Login</h5>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="username" class="col-md-4 col-form-label text-md-end">{{ __('username') }}</label>
+                            <label for="username" class="col-md-4 col-form-label text-md-end">{{ __('Username') }}</label>
 
                             <div class="col-md-7">
-                                <input type="text" class="form-control {{ $errors->has('username') }}" name="login" value="{{ old('username')}}"
-                                placeholder="Username" />
+                                <input type="text" class="form-control @error('username') is-invalid @enderror"  name="login" value="{{ old('username')}}" required autocomplete="username"
+                                placeholder="Username"/>
                                 @if ($errors->has('username'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('username')}}

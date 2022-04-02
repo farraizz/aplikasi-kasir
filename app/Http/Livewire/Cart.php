@@ -26,6 +26,8 @@ class Cart extends Component
     public $snapToken;
 
     public $selectPayment;
+
+    public $selectMeja;
     
     
 
@@ -36,14 +38,14 @@ class Cart extends Component
 
     public function pay_transaction()
     {
-        if ($_GET['result-data'])
-        {
-
-
+        if ($_GET['result-data']){
+            $selectedMeja = $_GET['table-selected'];
             $current_status = json_decode($_GET['result-data'], true);
             date_default_timezone_set('Asia/Jakarta');
             $time = date("d-m-Y H:i:s");
-            $cekmeja = Meja::where('currently_active', NULL)->first();
+            $cekmeja = Meja::where('id', (int)$selectedMeja)->first();
+            
+            // $cekmeja = Meja::where('currently_active', NULL)->get();
 
             $cart = session()->get('cart');
             $grandTotal = 0;
@@ -54,7 +56,7 @@ class Cart extends Component
                 $grandTotal = $total;
             }
 
-            if ($cekmeja) {
+            // if ($cekmeja) {
                 foreach((array) session('cart') as $ceks){
                     $tambahdata = Transaction::create(
                         [
@@ -64,50 +66,43 @@ class Cart extends Component
                             'product_name' => $ceks['name'],
                             'customer_name' => 'Test',
                             'buy_price' => $ceks['price'],
-                            'meja_id'   => $cekmeja->id,
+                            'meja_id'   => (int)$selectedMeja,
                             'quantity' => $ceks['quantity'],
                             'method' => 'Midtrans',
                             'total_price' => $grandTotal,
                             'buy_date' => $time,
                         ]
                     );
+
                     if ($tambahdata) {
+                        if ($selectedMeja == 0){
+                            return  redirect()->route('kasir')->with('eror', "pesanan gagal meja penuh");
+                        }
                         $produk = Product::findOrFail($ceks['id']);
+
+                        // if($selectedMeja==){
+                        //     return redirect()->route('kasir')->with('eror', "pesanan gagal meja penuh");
+                        //  }
 
                         $cekmeja->update([
                             'currently_active'  => $current_status['order_id'],
                         ]);
 
-
                         session()->forget('cart');
                         session()->forget('payment');
-
-
-                    } else {
+                        return redirect()->route('kasir')->with('success', "pesanan berhasil di tambahkan di meja $cekmeja->nomor_meja");
+                    }else {
                         $this->dispatchBrowserEvent('swal', [
                             'title' => 'Error',
                             'text' => 'Pembelian Gagal',
                             'icon' => 'error'
                         ]);
-
+                        dd('gagal');
                     }
                 }
-                $meja = Meja::where('id', $cekmeja->id)->get('nomor_meja');
-                $fixmeja = [
-                    'meja' => $meja
-                ];
-                return redirect()->route('kasir')->with(['success' => 'Data Berhasil di Tambahkan. Pelanggan di meja nomer ' . $fixmeja['meja']]);
-            } else {
-                $this->dispatchBrowserEvent('swal', [
-                    'title' => 'Gagal',
-                    'text' => 'Semua Meja Telah Diisi',
-                    'icon' => 'error'
-                ]);
-                return redirect()->route('kasir')->with(['error' => 'Semua Meja Telah Diisi']);
-            
-
+                // $meja = Meja::where('id', $cekmeja->id)->first();
             }
-        }
+        // }
     }
 
     public function render()
@@ -115,7 +110,7 @@ class Cart extends Component
         $cart = session('cart');
         $customer = session('customer');
         date_default_timezone_set('Asia/Jakarta');
-        $filter = Transaction::orderBy('id', 'desc')->first();
+        $filter = Transaction::orderBy('id', 'desc')->first(); 
         if (!empty($filter)) {
             $filterTransaction = $filter->id + rand();
         } else {
@@ -168,9 +163,9 @@ class Cart extends Component
         //     $custo = 'Guest';
         // }
         // $product = $this->search == '' ? Product::orderBy('name', 'asc')->get() : Product::where('name', 'like', "%$this->search%")->orderBy('name', 'asc')->get();
-
+        $cekmeja = Meja::where('currently_active', NULL)->get();
         $product = Product::where('name', 'like', '%'.$this->search.'%')->orderBy('name', 'DESC')->paginate(6);
-        return view('livewire.cart', compact('product'));
+        return view('livewire.cart', compact('product','cekmeja'));
     }
 
     public function addItem($id){
@@ -223,7 +218,14 @@ class Cart extends Component
 
     public function saveTransaction()
     {
-        dd('pembayaran cash nnti');
+        dd('pembayaran cash nanti');
+    }
+
+    public function cancelTransaction()
+    {
+        session()->forget('cart');
+        session()->forget('payment');
+        return redirect('home');
     }
 
     public function simpanPayment()
@@ -234,8 +236,15 @@ class Cart extends Component
             "id" => 1,
             "payment" => $this->selectPayment,
         ];
+        
+        // $payment[$this->selectMeja] = [
+        //     "id" => 1,
+        //     "payment" => $this->selectMeja,
+        // ];
+
         session()->put('payment', $payment);
-        return redirect()->route('kasir');
+        return redirect('kasir'
+        );
     }
 
     

@@ -28,7 +28,10 @@ class MejaController extends Controller
      */
     public function create()
     {
-        //
+        $meja = new Meja;
+        return view('kasir.addmeja', compact(
+            'meja'
+        ));
     }
 
     /**
@@ -39,7 +42,12 @@ class MejaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $meja = new Meja;
+
+        $meja->nomor_meja = $request->nomor_meja;
+        $meja->save();
+
+        return redirect('kasir/meja');
     }
 
     /**
@@ -74,7 +82,7 @@ class MejaController extends Controller
     public function update(Request $request, $id)
     {
         $meja = Meja::findOrFail($id);
-        $meja->currently_active = '-';
+        $meja->currently_active = null;
         $meja->save();
 
         return redirect('/kasir/meja')->with(['success' => 'Data Berhasil diubah']);

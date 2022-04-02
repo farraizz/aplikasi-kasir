@@ -33,7 +33,8 @@
     <script src="https://kit.fontawesome.com/87cfead0ed.js" crossorigin="anonymous"></script>
 </head>
 <body id="page-top">
-
+    @yield('ayam')
+        @auth
         <!-- Page Wrapper -->
         <div id="wrapper">
 
@@ -151,6 +152,7 @@
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
+        @endauth
 
         <!-- Bootstrap core JavaScript-->
         <script src="{{asset('/templateadmin/vendor/jquery/jquery.min.js')}}"></script>

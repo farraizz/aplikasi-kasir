@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image');
             $table->text('description');
-            $table->integer('qty');
+            $table->integer('qty')->unsigned();
             $table->integer('price');
             $table->timestamps();
         });

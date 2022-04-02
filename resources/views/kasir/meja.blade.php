@@ -2,7 +2,6 @@
 
 @section('content2')
     <div class="col-md-12">
-    <div class="card">
         @if ($message = Session::get('error'))
         <div class="alert alert-danger">
             <strong>{{ $message }}</strong>
@@ -14,7 +13,9 @@
              <strong>{{ $message }}</strong>
          </div>
           @endif
+    <div class="card">
     <div class="card-body">
+    <a class="btn btn-primary mb-3" href="{{url('kasir/meja/create')}}">Tambah</a>
     <table class="table table-bordered">
         
         <thead class="text-center">
@@ -28,7 +29,14 @@
             <tr>
                 <td>{{$mejas->id}}</td>
                 <td>{{ $mejas->nomor_meja}}</td>
-                <td>{{$mejas->currently_active}}</td>
+                <td>
+                @if($mejas->currently_active == null)
+                <div class="col-10 bg-danger text-center text-light" style="border-radius: 25px">
+                    Not Active
+                </div>
+                @else{{$mejas->currently_active}}
+                @endif
+                </td>
                 <td>
                     <form action="{{ route('meja.update', $mejas->id) }}" method="POST">
                     @csrf

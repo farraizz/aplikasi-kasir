@@ -32,11 +32,19 @@ overflow-x: hidden;">
                             </div>
                             <div class="card-footer" style="border-top: none">
                                 <span class="text-left font-weight-bold mb-3" style="text-transform: capitalize;">{{$item->name}}</span>
+                                @if($item->qty==0)
+                                <span class="text-danger" style="position: absolute; right:10px; font-size: 13px;">stock habis</span>
+                                @else
+                                <span style="position: absolute; right:10px; font-size: 13px;">Qty: {{$item->qty}}</span>
+                                @endif
                                 <br>
                                 <span style="font-size: 13px;">Rp. {{number_format($item['price'],2,',','.')}}</span>
+                                @if($item->qty==0)
+                                @else
                                 <button wire:click="addItem({{$item->id}})" class="btn btn-primary btn-sm" style=" position: absolute;bottom:0;right:0">
                                     <i class="fa-solid fa-cart-plus"></i>
                                 </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -100,7 +108,7 @@ overflow-x: hidden;">
         </div>
     </div> --}} -->
 
-    <div class="col-md-4 py-3">
+    <div class="col-md-4 ">
         <div class="card">
             <div class="card-header" style="border-bottom: none">
             <h4 class="font-weight-bold">Kasir</h4>
@@ -158,19 +166,32 @@ overflow-x: hidden;">
                 @if($grandTotal == 01)
                     <span class="font-weigth-bold">Total : 0</span>
                 @else
-                    <span class="font-weigth-bold">Total : {{number_format($grandTotal,2,',','.')}}</span>
+                    <span class="font-weigth-bold">Total {{$selectMeja}} : {{number_format($grandTotal,2,',','.')}}</span>
                 @endif
                 </div>
                 <br>
                 
-                <span style="font-size: 14px;">Pembayaran Sekarang: 
+                <span style="font-size: 14px;">Pilih Pembayaran: 
                 @forelse((array) session('payment') as $payment)
-                    <div style="font-size: 14px;">{{$payment['payment']}}</div>
-                    @empty
-                    <div style="font-size: 14px;">N/A</div>
-                    @endforelse
+                <span style="font-size: 14px;">{{$payment['payment']}}</span>
+                @empty
+                <span style="font-size: 14px;"></span>
+                @endforelse
                 </span>
 
+                @if($payment = session()->get('payment'))
+                <select class="form-select form-select-sm" wire:model="selectMeja" aria-label=".form-select-sm example">
+                    <option selected="" value="">Select Meja</option>
+                    @forelse($cekmeja as $cek)
+                    <option value="{{$cek->id}}">{{$cek->id}}</option>
+                    @empty
+                    @endforelse
+                </select>
+                @else
+                @endif
+
+                @if($payment = session()->get('payment'))
+                @else
                 <div class="form-check" style="font-size: 14px">
                     <input wire:model="selectPayment" value="cash" class="form-check-input sm" type="radio" name="payment" id="flexRadioDefault1">
                     <label class="form-check-label" for="flexRadioDefault1">
@@ -183,16 +204,22 @@ overflow-x: hidden;">
                         Online Payment
                     </label>
                   </div>
+                @endif
+                
+                @if ($payment = session()->get('payment'))
+                @else 
+                <div class="form-check"> 
+                    <button class="btn btn-success btn-md" wire:click="simpanPayment()">Simpan payment</button>
+                </div>
+                @endif
 
-                  <div class="form-check"> 
-                      <button class="btn btn-success btn-md" wire:click="simpanPayment()">Simpan payment</button>
-                  </div>
                 @foreach ((array) session('payment') as $payment)
                 @if ($payment['payment'] == 'midtrans')
                 <a href="#" class="btn btn-success btn-block" id="pay-button">Save Transaction</a>
                 @else
                 <button class="btn btn-success btn-block" wire:click="saveTransaction()">Save Transaction</button>
                 @endif
+                <button class="btn btn-danger btn-block" type="submit" wire:click="cancelTransaction">Cancel</button>
                 @endforeach
             </div>
             </div>
@@ -200,6 +227,7 @@ overflow-x: hidden;">
 
         <form action="{{route('payOrder')}}" method="GET" id="payment-form">
         <input type="hidden" name="result-data" id="result-data" value=""></div>
+        <input type="hidden" name="table-selected" id="table-selected" value="{{$selectMeja}}">
         </form>
     <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-8WHoIxrwA-uCdVli"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
