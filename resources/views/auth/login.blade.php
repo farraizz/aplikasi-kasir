@@ -3,8 +3,8 @@
 <div class="login">
 <div class="container">
     <div class="row d-flex justify-content-center my-5" style="padding:0">
-        <div class="col-md-5  my-5">
-            <div class="card">
+        <div class="col-md-5 my-5">
+            <div class="card my-5">
                 <h5 class="text-center mt-5">Login</h5>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

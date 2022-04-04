@@ -61,6 +61,15 @@
                             <i class="fas fa-fw fa-tachometer-alt"></i>
                             <span>Meja</span></a>
                     </li>
+
+                    <hr class="sidebar-divider my-0">
+        
+                    <!-- Nav Item - Dashboard -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{'/kasir/transaksi/riwayat'}}">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Riwayat Transaksi</span></a>
+                    </li>
         
                     <!-- Divider -->
                     <hr class="sidebar-divider d-none d-md-block">
@@ -129,7 +138,7 @@
                         <main>
                             <div class="container-fluid">
                                 @yield('content2')
-                                {{isset($slot) ? $slot : null}}
+                                {{-- {{isset($slot) ? $slot : null}} --}}
 
                             </div>
                         </main>

@@ -4,7 +4,7 @@
 <div class="col-md-12">
     <div class="card">
     <div class="card-body">
-    <a class="btn btn-primary mt-3" href="{{url('manajer/create')}}">Tambah</a>
+    <a class="btn btn-primary mt-3" href="{{url('manajer/product/create')}}">Tambah</a>
     <table class="table table-bordered">
         <thead class="text-center">
             <th>Name</th>
@@ -22,12 +22,13 @@
                 <td>{{$product->description}}</td>
                 <td>{{$product->qty}}</td>
                 <td>{{$product->price}}</td>
-                <td><a class="btn btn-primary" href="{{route ('manajer.edit', $product->id) }}">Edit</a></td>
+                <td><a class="btn btn-primary" href="{{route ('product.edit', $product->id) }}">Edit</a></td>
                 <td>
-                    <form action="{{route('manajer.destroy', $product->id)}}" method="POST">
+                    <form action="{{route('product.destroy', $product->id)}}" method="POST">
                         @csrf
                         @method('delete')
                         <button class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
             @endforeach

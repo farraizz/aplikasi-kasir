@@ -53,11 +53,20 @@
     
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="{{url('manajer/product')}}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span></a>
+                        <span>Product</span></a>
                 </li>
     
+                <hr class="sidebar-divider my-0">
+    
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url('manajer/mejamanajer')}}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Meja</span></a>
+                </li>
+
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
     

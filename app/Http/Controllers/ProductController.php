@@ -22,7 +22,7 @@ class ProductController extends Controller
         $role = User::where('role', 'manajer')->get();
         if(Auth::user()->role != 'kasir') {
             $product = Product::all();
-            return view('manajer.manajer', [
+            return view('manajer.product.manajer', [
                 'product' => $product
             ]);
         }else {
@@ -43,7 +43,7 @@ class ProductController extends Controller
     public function create()
     {
         $product = new Product;
-        return view('manajer.addproduct', compact(
+        return view('manajer.product.addproduct', compact(
             'product'
         ));
     }
@@ -74,7 +74,7 @@ class ProductController extends Controller
         if($addData){
             $image->move($directory_upload, $new_name_photo);
             // Alert::success('Success', 'Successfully');
-            return redirect()->route('manajer.index');
+            return redirect()->route('manajer.product.index');
         }
     }
 
@@ -98,7 +98,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return view('manajer.edit', compact(
+        return view('manajer.product.edit', compact(
             'product'
         ));
     }

@@ -4,7 +4,7 @@
 <div class="col-md-12 py-4">
     <div class="card">
     <div class="card-body">
-    <form action="/kasir/meja" method="POST">
+    <form action="/manajer/meja" method="POST">
         @csrf
         <label for="form-control">Nomor Meja</label>
         <div class="mb-3">

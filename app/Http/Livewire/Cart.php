@@ -56,7 +56,9 @@ class Cart extends Component
                 $grandTotal = $total;
             }
 
-            // if ($cekmeja) {
+            // if ($selectedMeja == 0){
+            // return  redirect('kasir')->with('eror', "pesanan gagal meja penuh");
+            if ($cekmeja!=NULL) {
                 foreach((array) session('cart') as $ceks){
                     $tambahdata = Transaction::create(
                         [
@@ -64,7 +66,7 @@ class Cart extends Component
                             'transaction_id' => $current_status['order_id'],
                             'product_id' => $ceks['id'],
                             'product_name' => $ceks['name'],
-                            'customer_name' => 'Test',
+                            // 'customer_name' => 'Test',
                             'buy_price' => $ceks['price'],
                             'meja_id'   => (int)$selectedMeja,
                             'quantity' => $ceks['quantity'],
@@ -73,11 +75,11 @@ class Cart extends Component
                             'buy_date' => $time,
                         ]
                     );
-
+                }
                     if ($tambahdata) {
-                        if ($selectedMeja == 0){
-                            return  redirect()->route('kasir')->with('eror', "pesanan gagal meja penuh");
-                        }
+                        // if ($selectedMeja == 0){
+                        //     return  redirect('kasir')->with('eror', "pesanan gagal meja penuh");
+                        // }
                         $produk = Product::findOrFail($ceks['id']);
 
                         // if($selectedMeja==){
@@ -90,7 +92,7 @@ class Cart extends Component
 
                         session()->forget('cart');
                         session()->forget('payment');
-                        return redirect()->route('kasir')->with('success', "pesanan berhasil di tambahkan di meja $cekmeja->nomor_meja");
+                    return redirect()->route('kasir')->with('success', "pesanan berhasil di tambahkan di meja $cekmeja->nomor_meja");
                     }else {
                         $this->dispatchBrowserEvent('swal', [
                             'title' => 'Error',
@@ -99,11 +101,12 @@ class Cart extends Component
                         ]);
                         dd('gagal');
                     }
-                }
+               }
                 // $meja = Meja::where('id', $cekmeja->id)->first();
             }
         // }
-    }
+            }
+    
 
     public function render()
     {
@@ -145,11 +148,11 @@ class Cart extends Component
                 'order_id' => $resi,
                 'gross_amount' => $this->grandTotal,
             ),
-            'customer_details' => array(
-                'first_name' => 'tes',
-                'email' => 'fara@pos.com',
-                'phone' => '0875656588',
-            ),
+            // 'customer_details' => array(
+            //     // 'first_name' => 'tes',
+            //     'email' => 'fara@pos.com',
+            //     'phone' => '0875656588',
+            // ),
         );
 
         $this->snapToken = \Midtrans\Snap::getSnapToken($params);

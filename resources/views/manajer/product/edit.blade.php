@@ -2,7 +2,7 @@
 
 @section('content3')
 <div class="col-md-12 py-4">
-    <form action="{{route('manajer.update', $product->id)}}" method="POST">
+    <form action="{{route('product.update', $product->id)}}" method="POST">
         @csrf
         @method('put')
         <label for="form-control">Nama</label>

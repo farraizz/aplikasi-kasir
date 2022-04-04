@@ -2,7 +2,7 @@
 overflow-x: hidden;">
 <div class="row">
     <div class="col-md-8">
-        @if ($message = Session::get('error'))
+        @if ($message = Session::get('eror'))
         <div class="alert alert-danger">
             <strong>{{ $message }}</strong>
         </div>
@@ -53,8 +53,7 @@ overflow-x: hidden;">
                     @endforelse
                     <div style="display: flex; justify-content: center;" class="mt-5">
                         {{ $product->links() }}
-                    </div>
-         
+                    </div>         
                 </div>
             </div> 
         </div>
@@ -179,14 +178,24 @@ overflow-x: hidden;">
                 @endforelse
                 </span>
 
-                @if($payment = session()->get('payment'))
+                {{-- @if($selectMeja == 0)
                 <select class="form-select form-select-sm" wire:model="selectMeja" aria-label=".form-select-sm example">
                     <option selected="" value="">Select Meja</option>
                     @forelse($cekmeja as $cek)
                     <option value="{{$cek->id}}">{{$cek->id}}</option>
-                    @empty
-                    @endforelse
                 </select>
+                @empty
+                @else
+                @endforelse
+                @endif --}}
+
+                @if($cekmeja != NULL)
+                <select class="form-select form-select-sm" wire:model="selectMeja" aria-label=".form-select-sm example">
+                    {{-- <option selected="" value="">Select Meja</option> --}}
+                    @foreach($cekmeja as $cek)
+                    <option value="{{$cek->id}}">{{$cek->id}}</option>
+                </select>
+                @endforeach
                 @else
                 @endif
 

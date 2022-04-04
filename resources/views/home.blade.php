@@ -11,7 +11,7 @@
 @endif
 
 @if(Auth::user()->role == 'manajer')
-<script>window.location ="/manajer"</script>
+<script>window.location ="/manajer/product"</script>
 @endif
 
 {{-- @if(Auth::user()->role == 'manajer')

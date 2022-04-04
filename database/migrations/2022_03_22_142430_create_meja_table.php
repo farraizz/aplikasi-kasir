@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('meja', function (Blueprint $table) {
             $table->id();
             $table->integer('nomor_meja');
-            $table->string('currently_active');
+            $table->string('currently_active')->nullable();
             $table->timestamps();
         });
     }

@@ -26,6 +26,8 @@ class Transaction extends Model
         'product_name',
     ];
 
+    protected $perPage = 10;
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -38,4 +40,6 @@ class Transaction extends Model
     {
         return $this->belongsTo(Meja::class, 'meja_id');
     }
+
+
 }
